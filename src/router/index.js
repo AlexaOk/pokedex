@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+//import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,17 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: () => import('../components/PokedexForm.vue')
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../components/FirstComponent.vue')
+  },
+  {
+    path: '/testt',
+    name: 'testt',
+    component: () => import('../components/test.vue')
   },
   {
     path: '/about',
