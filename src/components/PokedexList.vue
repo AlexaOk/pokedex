@@ -1,11 +1,19 @@
 <template>
-    <div class="container vue">
-        <b-row>
-        <input type="text" placeholder="Type a name or Id" v-model="pokemonSearchString"/>
-        <button @click="invertSort()">Sort asc/desc</button>
+    <b-container>
+        <b-row>     
+            <b-col sm="12">
+                <b-input-group class="mt-3">
+                    <b-form-input type="text" placeholder="Type a name or Id" v-model="pokemonSearchString"></b-form-input>
+                    <b-input-group-append>
+                        <b-button squared variant="outline-secondary" @click="invertSort()">Sort asc/desc</b-button>
+                    </b-input-group-append>
+                </b-input-group>
+            </b-col>
         </b-row>
+        <hr/>
         <b-row>
-            <b-card-group deck>
+            <b-col sm="12">
+                <b-card-group  deck>
                     <div v-for="(pokemon, index) in filteredNameFeed.slice(0,pokemonToShow)" :key="index+10">
                         <b-card :title="pokemon.name" :img-src="pokemon.sprite" img-alt="Image" img-top>
                             <b-card-text>Pokemon n°{{ pokemon.id}}</b-card-text>
@@ -14,12 +22,14 @@
                                 </template>
                             </b-card>
                     </div>
-            </b-card-group>
+                </b-card-group>
+            </b-col>
         </b-row>
-        <button v-if="filteredNameFeed.length > 6 && pokemonToShow < filteredNameFeed.length" @click="loadMore">
+        <hr/>
+        <b-button  pill variant="outline-success" v-if="filteredNameFeed.length > 6 && pokemonToShow < filteredNameFeed.length" @click="loadMore">
             Load more pokemons
-        </button>
-    </div>
+        </b-button>
+    </b-container>
 </template>
 <script>
 import axios from 'axios';
