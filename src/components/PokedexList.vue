@@ -56,18 +56,19 @@ export default {
         axios
         .get('https://pokeapi.co/api/v2/pokemon/?limit=251')
         .then(response => {
-            this.list.push(response.data.results);
-            this.list[0].forEach((element) => {
+            this.list = response.data.results;
+            this.list.forEach((element) => {
             //get Pokemon object data
             axios
                 .get(element.url)
                 .then(
                     response2 => {
                         //Create new element in object
+                       // this.finalList.push(this.list)
                         element.id = response2.data.id.toString()
                         element.types = response2.data.types
-                        element.sprite = response2.data.sprites.front_default
-                        this.finalList.push(element)
+                       element.sprite = response2.data.sprites.front_default
+                        //this.list = element
                     }
                 )    
             })          
@@ -85,7 +86,7 @@ export default {
     },
     computed: {
         filteredNameFeed() {
-            var names = this.finalList;
+            var names = this.list;
             var pokemonSearchString = this.pokemonSearchString;
             let ascDesc = this.sortAsc ? 1 : -1;
             //Filter pokemon list by name or ID
