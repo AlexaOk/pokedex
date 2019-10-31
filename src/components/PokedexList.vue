@@ -17,7 +17,7 @@
                     <div v-for="(pokemon, index) in filteredNameFeed.slice(0,pokemonToShow)" :key="index+10">
                         <b-card :title="pokemon.name" :img-src="pokemon.sprite" img-alt="Image" img-top>
                             <b-card-text>Pokemon n°{{ pokemon.id}}</b-card-text>
-                                <template v-slot:footer >
+                               <template v-slot:footer >
                                     <small v-for="(types, value) in pokemon.types" :key="value+10" class="text-muted">{{ types.type.name}} </small>
                                 </template>
                             </b-card>
@@ -26,6 +26,8 @@
             </b-col>
         </b-row>
         <hr/>
+
+
         <b-button  pill variant="outline-success" v-if="filteredNameFeed.length > 6 && pokemonToShow < filteredNameFeed.length" @click="loadMore">
             Load more pokemons
         </b-button>
@@ -44,7 +46,7 @@ export default {
             pokemonSearchString : '',
             list: [],
             finalList: [],
-            pokemonToShow: 6,
+            pokemonToShow: 5,
             sortAsc: true
         }
     },
@@ -72,7 +74,7 @@ export default {
         })
         },
         loadMore() {
-            this.pokemonToShow += 6
+            this.pokemonToShow += 5
         },
         invertSort() {
             this.sortAsc = !this.sortAsc;
@@ -108,4 +110,8 @@ export default {
 
 <style>
 
+.card-deck .card {
+    width: 12rem;
+    margin-bottom: 20px;
+}
 </style>
