@@ -15,10 +15,10 @@
             <b-col sm="12">
                 <b-card-group  deck>
                     <div v-for="(pokemon, index) in filteredNameFeed.slice(0,pokemonToShow)" :key="index+10">
-                        <b-card :title="pokemon.name" :img-src="pokemon.sprite" img-alt="Image" img-top>
-                            <b-card-text>Pokemon n°{{ pokemon.id}}</b-card-text>
+                        <b-card :title="pokemon.name" :img-src="pokemon.details.sprite" img-alt="Image" img-top>
+                            <b-card-text>Pokemon n°{{ pokemon.details.id}}</b-card-text>
                                <template v-slot:footer >
-                                    <small v-for="(types, value) in pokemon.types" :key="value+10" class="text-muted">{{ types.type.name}} </small>
+                                    <small v-for="(types, value) in pokemon.details.types" :key="value+10" class="text-muted">{{ types.type.name}} </small>
                                 </template>
                             </b-card>
                     </div>
@@ -28,7 +28,7 @@
         <hr/>
 
 
-        <b-button  pill variant="outline-success" v-if="filteredNameFeed.length > 6 && pokemonToShow < filteredNameFeed.length" @click="loadMore">
+       <b-button  pill variant="outline-success" v-if="filteredNameFeed.length > 6 && pokemonToShow < filteredNameFeed.length" @click="loadMore">
             Load more pokemons
         </b-button>
     </b-container>
