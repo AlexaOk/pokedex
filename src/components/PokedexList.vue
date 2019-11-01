@@ -37,54 +37,70 @@
 import axios from 'axios';
 
 export default {
-      props: [
-      'apiUrl'
-    ],
     data() {
         return {
-            componentLoaded: false,
             pokemonSearchString : '',
             list: [],
-            finalList: [],
+            load: true,
             pokemonToShow: 5,
             sortAsc: true
         }
     },
-    methods: {
-        getList() {
-        //get all Pokemon object 
-        axios
-        .get('https://pokeapi.co/api/v2/pokemon/?limit=251')
+watch: {
+    list(newValue, oldValue) {
+      if (oldValue.length === 0 && newValue.length > 0) {
+        this.loadDetails();
+      }
+    }
+  },
+  methods: {
+    getList() {
+      axios
+        .get("https://pokeapi.co/api/v2/pokemon/?limit=251")
+
         .then(response => {
-            this.list = response.data.results;
-            this.list.forEach((element) => {
-            //get Pokemon object data
-            axios
-                .get(element.url)
-                .then(
-                    response2 => {
-                        //Create new element in object
-                       // this.finalList.push(this.list)
-                        element.id = response2.data.id.toString()
-                        element.types = response2.data.types
-                       element.sprite = response2.data.sprites.front_default
-                        this.list.push(element)
-                    }
-                )    
-            })          
+          this.list = response.data.results;
         })
-        },
-        loadMore() {
-            this.pokemonToShow += 5
-        },
-        invertSort() {
-            this.sortAsc = !this.sortAsc;
+
+       
+        .finally(() => (this.loading = false));
+    },
+
+    loadDetails() {
+      this.list.forEach((element) => {
+        const secondApiUrl = element.url;
+        this.getDetailByPokemon(secondApiUrl);
+      });
+    },
+    getDetailByPokemon(secondApiUrl) {
+      axios.get(secondApiUrl).then(response => {
+        this.mapDetailsInList(response, secondApiUrl);
+      });
+    },
+    mapDetailsInList(response, secondApiUrl) {
+      // mapping the required infos to list
+      const id = response.data.id.toString();
+      const sprite = response.data.sprites.front_default;
+      const types = response.data.types;
+      this.list = this.list.map(element => {
+        const mappedElement = element;
+        if (element.url === secondApiUrl) {
+          mappedElement.details = { id: id, sprite: sprite, types: types };
         }
+        return mappedElement;
+      });
     },
-    mounted() {
-        this.getList();
-    },
-    computed: {
+    loadMore() {
+        this.pokemonToShow += 5
+        },
+    invertSort() {
+        this.sortAsc = !this.sortAsc;
+    }
+  },
+  mounted() {
+    this.getList();
+  },
+      computed: {
         filteredNameFeed() {
             var names = this.list;
             var pokemonSearchString = this.pokemonSearchString;
@@ -92,21 +108,22 @@ export default {
             //Filter pokemon list by name or ID
 
             if(!pokemonSearchString){
-                return names;
+                return names
             }
 
             pokemonSearchString = pokemonSearchString.trim().toLowerCase();
 
             names = names.filter(function(item){
-                if(item.name.toLowerCase().indexOf(pokemonSearchString) !== -1 || item.id.indexOf(pokemonSearchString) !== -1 ){
+                if(item.name.toLowerCase().indexOf(pokemonSearchString) !== -1  || item.details.id.indexOf(pokemonSearchString) !== -1){
                     return item;
                 }
             })
             
-            return names.sort((a, b) => ascDesc * a.name.localeCompare(b.name))
+            return names.sort((a, b) => ascDesc * a.name.localeCompare(b.name)); 
         }
     },
 }
+
 </script>
 
 <style>
