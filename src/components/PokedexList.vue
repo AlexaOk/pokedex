@@ -68,7 +68,7 @@ export default {
                         element.id = response2.data.id.toString()
                         element.types = response2.data.types
                        element.sprite = response2.data.sprites.front_default
-                        //this.list = element
+                        this.list.push(element)
                     }
                 )    
             })          
@@ -103,7 +103,7 @@ export default {
                 }
             })
             
-            return names.sort((a, b) => ascDesc * a.name.localeCompare(b.name)); 
+            return names.sort((a, b) => ascDesc * a.name.localeCompare(b.name))
         }
     },
 }

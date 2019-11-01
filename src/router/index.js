@@ -9,6 +9,11 @@ const routes = [
     name: 'home',
     component: () => import('../components/Pokedex.vue')
   },
+  {
+  path: '/test',
+  name: 'test',
+  component: () => import('../components/test.vue')
+},
 ]
 
 const router = new VueRouter({
