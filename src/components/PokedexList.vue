@@ -127,7 +127,7 @@ export default {
         filteredPokemon: {
             get() {
                 var names = this.list;
-                var pokemonSearchString = this.pokemonSearchString;
+                var pokemonSearchString = this.pokemonSearchString.trim().toLowerCase();
                 this.sortByName ? 1 : -1;
                 this.sortById ? 1 : -1;
             
